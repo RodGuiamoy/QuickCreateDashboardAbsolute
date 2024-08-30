@@ -7,7 +7,8 @@ import sys
 inputticketnumber = os.environ['ticketnumber']
 inputservername = sys.argv[1]
 inputregion = sys.argv[2]
-input_days= sys.argv[3]
+start_date= sys.argv[3]
+end_date= sys.argv[4]
 target_region = inputregion
 instance_name = inputservername
 
@@ -20,10 +21,21 @@ session = boto3.Session(
 cloudwatch_data = session.client('cloudwatch')
 
 # Define the time range for the data retrieval (past 2 months)
-day_range = int(input_days)
-start_time = datetime.utcnow() - timedelta(days=day_range)
-#start_time = datetime.utcnow() - timedelta(minutes=15)
-end_time = datetime.utcnow()
+# day_range = int(input_days)
+# start_time = datetime.utcnow() - timedelta(days=day_range)
+# #start_time = datetime.utcnow() - timedelta(minutes=15)
+# end_time = datetime.utcnow()
+
+# Convert the string inputs to datetime objects, setting times to 00:00 for start and 23:59 for end
+start_time = datetime.strptime(start_date, '%m/%d/%Y')
+start_time = start_time.replace(hour=0, minute=0, second=0)
+
+end_time = datetime.strptime(end_date, '%m/%d/%Y')
+end_time = end_time.replace(hour=23, minute=59, second=59)
+
+# Calculate the number of days between the start and end dates
+day_range = (end_time - start_time).days + 1  # Add 1 to include both start and end days
+
 print (f"{start_time} to {end_time}")
 
 def get_instance_id_from_name(instance_name):
