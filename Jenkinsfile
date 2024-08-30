@@ -16,7 +16,7 @@ pipeline {
             steps {
                 sh 'python3 --version'
                 sh 'pip3 install pandas'
-                checkout([$class: 'GitSCM', branches: [[name: "*/main"]], extensions: [], userRemoteConfigs: [[credentialsId:'nathanielcaguioa_git', url: "git@github.com:nathanielcaguioa/iops_throughput_dashboard_git"]]])
+                checkout([$class: 'GitSCM', branches: [[name: "*/dev"]], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[url: "https://github.com/RodGuiamoy/QuickCreateDashboardAbsolute.git"]]])
             }
         }
         stage('Execute Shell') {
